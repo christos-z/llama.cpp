@@ -1,4 +1,4 @@
-name: Sync upstream master
+name: Sync Adaptive KV with upstream
 
 on:
   schedule:
@@ -9,23 +9,23 @@ permissions:
   contents: write
 
 concurrency:
-  group: sync-upstream-master
+  group: sync-adaptive-kv-upstream
   cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out fork
+      - name: Check out integration branch
         uses: actions/checkout@v4
         with:
-          ref: master
+          ref: integrate/adaptive-kv-upstream
           fetch-depth: 0
-      - name: Merge official llama.cpp master
+      - name: Merge upstream master
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote add upstream https://github.com/ggml-org/llama.cpp.git
           git fetch upstream master
           git merge --no-edit upstream/master
-          git push origin HEAD:master
+          git push origin HEAD:integrate/adaptive-kv-upstream
